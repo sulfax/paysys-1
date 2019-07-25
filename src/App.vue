@@ -1,56 +1,57 @@
 <template>
-	<div id="app">
-		<h1>Elke's fantastic blog</h1>
-		<button @click="toggleHighlightedPostsVisibility">{{ showHighlighted ? 'Hide' : 'Show' }} highlighted posts</button>
-		<BlogPost v-for="blogPost in visibleBlogPosts" :post="blogPost" :key="blogPost.title" />
-	</div>
+    <div id="app">
+        <div id="nav">
+            <Header/>
+        </div>
+        <router-view/>
+    </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import BlogPost, { Post } from './components/BlogPost.vue';
-import { AxiosResponse } from 'axios';
+<style lang="scss">
+    #app {
 
-@Component({
-	components: {
-		BlogPost,
-	},
-})
-export default class App extends Vue {
+        position: relative;
+        height: 1024px;
 
-	public showHighlighted: boolean = true;
+        background: linear-gradient(233.41deg, #32454F 4.56%, rgba(21, 21, 24, 0) 73.99%), #32454F;
+    }
 
-	private blogPosts: Post[] = [];
+    .techyon {
+        padding: 10px;
+        color: #C9CFC6;
+    }
 
-	get visibleBlogPosts() {
-		return this.blogPosts.filter((post: Post) => post.highlighted === undefined ||  post.highlighted === this.showHighlighted);
-	}
+    nav li:hover,
+    nav li.router-link-active,
+    nav li.router-link-exact-active {
+        background-color: #cdc400;
+        cursor: pointer;
+    }
 
-	public toggleHighlightedPostsVisibility() {
-		this.showHighlighted = !this.showHighlighted;
-	}
-
-	private created() {
-		this.$http.get('http://localhost:3000/blogposts').then((response: AxiosResponse) => {
-			this.blogPosts = response.data.map((val: any) => ({
-				title: val.title,
-				body: val.body,
-				author: val.author,
-				datePosted: new Date(val.datePosted),
-				highlighted: val.highlighted,
-			}));
-		});
-	}
-}
+</style>
+<script>
+  import Header from "@/components/layout/Header";
+  export default {
+    components: {Header}
+  }
 </script>
 
 <style lang="scss">
-#app {
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
-	margin-top: 60px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+
+    background: linear-gradient(233.41deg, #32454F 4.56%, rgba(21, 21, 24, 0) 73.99%), #32454F;
+  }
+  #nav {
+    a {
+      font-weight: bold;
+      color: #42b983;
+      &.router-link-exact-active {
+        color: #ffffff;
+      }
+    }
+  }
 </style>

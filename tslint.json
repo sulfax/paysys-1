@@ -10,7 +10,7 @@
   },
   "rules": {
     "quotemark": [true, "single"],
-    "indent": [true, "tabs"],
+    "indent": [false, "tabs"],
     "interface-name": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
